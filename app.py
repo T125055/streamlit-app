@@ -53,6 +53,12 @@ if range_mode:
     df2 = df2[(df2['年'] >= year_range[0]) &
             (df2['年'] <= year_range[1])]
 
+    # 期間の最初と最後の死亡数の合計
+    start_value = df2[df2['年'] == year_range[0]]['死亡数'].sum()
+    end_value   = df2[df2['年'] == year_range[1]]['死亡数'].sum()
+
+    delta = end_value - start_value
+
     st.subheader(f'{year_range[0]}年～{year_range[1]}年 死亡数推移 (横軸：年, 縦軸：死亡数(人))')
     df_chart = df2.pivot(
         index='年',
@@ -60,3 +66,9 @@ if range_mode:
         values='死亡数'
     )
     st.line_chart(df_chart)
+
+    st.metric(
+    label=f'{year_range[0]}年 → {year_range[1]}年の死亡数の増減（選択都道府県合計）',
+    value=f'{end_value:,} 人',
+    delta=f'{delta:+,} 人'
+    )
