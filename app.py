@@ -23,14 +23,13 @@ with st.sidebar:
     
     year = st.selectbox('表示する年を選択してください',
                     years)
-
-    year_range = st.slider(label='年を選択してください',
+    
+    range_mode = st.checkbox('年の推移を表示する')
+    if range_mode:
+            year_range = st.slider(label='年を選択してください',
                         min_value= 1975,
                         max_value= 2024,
                         value=(1990, 2015) )
-    
-    range_mode = st.checkbox('年の推移を表示する')
-
 
 df = df_long.copy()
 
@@ -49,5 +48,10 @@ df2 =  df_long[df_long['都道府県'].isin(branch)]
 df2 = df2[(df2['年'] >= year_range[0]) &
             (df2['年'] <= year_range[1])]
 
-st.dataframe(df2, width=800, height=200)
+st.subheader('推移')
+df_chart = df.pivot(
+    index='年',
+    columns='都道府県',
+    values='死亡数'
+)
 st.line_chart(df2)
