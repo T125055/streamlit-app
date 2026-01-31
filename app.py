@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.title('都道府県別にみた年別死亡数')
+st.divider()
 
 df = pd.read_csv('people.csv', encoding='cp932')
 
